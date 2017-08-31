@@ -28,7 +28,7 @@
                                     <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
                                 <div class="cartcontrol-wrapper">
-                                    <cartcontrol :food="food"></cartcontrol>
+                                    <cartcontrol @add="addFood" :food="food"></cartcontrol>
                                 </div>
                             </div>
                         </li>
@@ -36,7 +36,8 @@
                 </li>
             </ul>
         </div>
-        <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+        <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice"
+                  :minPrice="seller.minPrice"></shopcart>
     </div>
 </template>
 
@@ -81,6 +82,17 @@
                     }
                 }
                 return 0;
+            },
+            selectFoods() {
+                let foods = [];
+                this.goods.forEach((good) => {
+                    good.foods.forEach((food) => {
+                        if (food.count) {
+                            foods.push(food);
+                        }
+                    });
+                });
+                return foods;
             }
         },
         methods: {
@@ -91,6 +103,15 @@
                 let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
                 let el = foodList[index];
                 this.foodsScroll.scrollToElement(el, 300);
+            },
+            addFood(target) {
+                this._drop(target);
+            },
+            _drop(target) {
+                // 异步落下
+                this.$nextTick(() => {
+                    this.$refs.shopcart.drop(target);
+                });
             },
             _initScroll() {
                 this.menuScroll = new BScroll(this.$refs.menuWrapper, {
@@ -221,4 +242,8 @@
                             text-decoration: line-through
                             color: rgb(147, 153, 159)
                             font-size: 10px
+                    .cartcontrol-wrapper
+                        position: absolute
+                        right: 0
+                        bottom: 12px
 </style>
