@@ -1,6 +1,6 @@
 <template>
     <div class="shopcart">
-        <div class="content">
+        <div class="content" @click="toggleList">
             <div class="content-left">
                 <div class="logo-wrapper">
                     <div class="logo" :class="{'highlight':totalCount>0}">
@@ -24,10 +24,34 @@
                 </transition>
             </div>
         </div>
+        <transition name="fold">
+            <div class="shopcart-list" v-show="listShow">
+                <div class="list-header">
+                    <h1 class="title">购物车</h1>
+                    <span class="empty" @click="empty">清空</span>
+                </div>
+                <div class="list-content" ref="listContent">
+                    <ul>
+                        <li class="food" v-for="food in selectFoods">
+                            <span class="name">{{food.name}}</span>
+                            <div class="price">
+                                <span>￥{{food.price*food.count}}</span>
+                            </div>
+                            <div class="cartcontrol-wrapper">
+                                <cartcontrol @add="addFood" :food="food"></cartcontrol>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import BScroll from 'better-scroll';
+    import cartcontrol from '../cartcontrol/Cartcontrol.vue';
+
     export default{
         props: {
             selectFoods: {
@@ -67,7 +91,8 @@
                         show: false
                     }
                 ],
-                dropBalls: []
+                dropBalls: [],
+                fold: true
             };
         },
         computed: {
@@ -101,11 +126,33 @@
                 } else {
                     return 'enough';
                 }
+            },
+            listShow() {
+                if (!this.totalCount) {
+                    this.fold = true;// true 是折叠
+                    return false;
+                }
+                let show = this.fold;
+                return show;
             }
         },
         methods: {
+            empty() {
+                this.selectFoods.forEach((food) => {
+                    food.count = 0;
+                });
+            },
+            toggleList() {
+                if (!this.totalCount) {
+                    return;
+                }
+                this.fold = !this.fold;
+            },
+            addFood(target) {
+                this.drop(target);
+            },
             drop(el) {
-                // console.log(el);
+                console.log(el);
                 for (let i = 0; i < this.balls.length; i++) {
                     let ball = this.balls[i];
                     if (!ball.show) {
@@ -152,7 +199,9 @@
                 }
             }
         },
-        components: {}
+        components: {
+            cartcontrol
+        }
     };
 </script>
 
