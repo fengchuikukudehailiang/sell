@@ -50,6 +50,7 @@
                                 </p>
                             </li>
                         </ul>
+                        <div class="no-rating" v-show="!food.ratings||!food.ratings.length">暂无评价</div>
                     </div>
                 </div>
             </div>
@@ -125,7 +126,14 @@
                 });
             },
             needShow(type, text) {
-                return true;
+                if (this.onlyContent && !text) {
+                    return false;
+                }
+                if (this.selectType === ALL) {
+                    return true;
+                } else {
+                    return type === this.selectType;
+                }
             }
         },
         components: {
@@ -287,4 +295,8 @@
                             color: rgb(0, 160, 220)
                         .icon-thumb_down
                             color: rgb(147, 153, 159)
+                .no-rating
+                    padding: 16px 0
+                    font-size: 12px
+                    color: rgb(147, 153, 159)
 </style>
