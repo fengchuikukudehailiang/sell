@@ -18,7 +18,7 @@
 
 <script type="text/ecmascript-6">
     import header from './components/header/Header.vue';
-    const ERROR_OK = 1;
+    const ERROR_OK = 0;
     export default {
         data() {
             return {

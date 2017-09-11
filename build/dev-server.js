@@ -29,20 +29,20 @@ var ratings = apiData.ratings;
 var apiRoutes = express.Router();
 apiRoutes.get('/seller', function (req, res) {
     res.json({
-        errorCode: 1,
+        errorCode: 0,
         data: seller
     });
 });
 
 apiRoutes.get('/goods', function (req, res) {
     res.json({
-        errorCode: 2,
+        errorCode: 0,
         data: goods
     });
 });
 apiRoutes.get('/ratings', function (req, res) {
     res.json({
-        errorCode: 3,
+        errorCode: 0,
         data: ratings
     });
 });

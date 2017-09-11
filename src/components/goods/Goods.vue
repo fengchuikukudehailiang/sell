@@ -48,7 +48,7 @@
     import cartcontrol from '../cartcontrol/Cartcontrol.vue';
     import food from '../food/Food.vue';
 
-    const ERR_OK = 2;
+    const ERR_OK = 0;
     export default{
         props: {
             seller: {
