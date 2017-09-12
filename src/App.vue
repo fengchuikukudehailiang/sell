@@ -12,7 +12,9 @@
                 <router-link to="/seller">商家</router-link>
             </div>
         </div>
-        <router-view :seller="seller"></router-view>
+        <keep-alive>
+            <router-view :seller="seller"></router-view>
+        </keep-alive>
     </div>
 </template>
 
@@ -36,7 +38,7 @@
                 response = response.body;
                 if (response.errorCode === ERROR_OK) {
                     this.seller = Object.assign({}, this.seller, response.data);
-                   // console.log(this.seller);
+                    // console.log(this.seller);
                 }
             });
         },
